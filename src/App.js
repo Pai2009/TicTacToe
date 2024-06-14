@@ -35,7 +35,7 @@ function App() {
   const [isDraw, setIsDraw] = useState(false);
   const [learningData, setLearningData] = useState(getLearningDataFromCookie());
   const [isCookieConsent, setIsCookieConsent] = useState(getCookie('cookieConsent') === 'true');
-  const [cookieAccepted, setCookieAccepted] = useState(false);
+  const [cookieAccepted, setCookieAccepted] = useState(getCookie('cookieAccepted') === 'true');
 
   useEffect(() => {
     const isComputerTurn = squares.filter(square => square !== null).length % 2 === 1;
@@ -126,7 +126,9 @@ function App() {
 
   function handleAcceptCookies() {
     setCookieAccepted(true);
-    document.cookie = `cookieAccepted=true; expires=Sun, 31 Dec 2023 12:00:00 UTC; path=/`;
+    setIsCookieConsent(true); // อัพเดทค่านี้เมื่อยอมรับคุกกี้
+    document.cookie = `cookieAccepted=true; expires=Sun, 31 Dec 2024 12:00:00 UTC; path=/`;
+    document.cookie = `cookieConsent=true; expires=Sun, 31 Dec 2024 12:00:00 UTC; path=/`;
   }
 
   return (
