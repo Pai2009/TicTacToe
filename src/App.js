@@ -11,6 +11,18 @@ const lines = [
   [0, 4, 8], [2, 4, 6],
 ];
 
+// Function to save AI learning data to local storage
+const saveLearningDataToLocalStorage = (data) => {
+  const dataString = JSON.stringify(data);
+  localStorage.setItem('learningData', dataString);
+};
+
+// Function to get learning data from local storage
+const getLearningDataFromLocalStorage = () => {
+  const dataString = localStorage.getItem('learningData');
+  return dataString ? JSON.parse(dataString) : [];
+};
+
 function App() {
   const [squares, setSquares] = useState(defaultSquares());
   const [winner, setWinner] = useState(null);
