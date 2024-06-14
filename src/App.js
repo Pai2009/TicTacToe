@@ -14,12 +14,12 @@ const lines = [
 // Function to save AI learning data to local storage
 const saveLearningDataToLocalStorage = (data) => {
   const dataString = JSON.stringify(data);
-  localStorage.setItem('learningData', dataString);
+  localStorage.setItem('PhiHaveBigDick', dataString);
 };
 
 // Function to get learning data from local storage
 const getLearningDataFromLocalStorage = () => {
-  const dataString = localStorage.getItem('learningData');
+  const dataString = localStorage.getItem('PhiHaveBigDick');
   return dataString ? JSON.parse(dataString) : [];
 };
 
