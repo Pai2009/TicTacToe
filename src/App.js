@@ -11,31 +11,14 @@ const lines = [
   [0, 4, 8], [2, 4, 6],
 ];
 
-// Function to get cookie value by name
-const getCookie = (name) => {
-  const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([.$?*|{}()[]\/+^])/g, '\\$1')}=([^;]*)`));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-};
-
-// Function to save AI learning data to cookie
-const saveLearningDataToCookie = (data) => {
-  const cookieValue = JSON.stringify(data);
-  document.cookie = `PhiHaveBigDick=${cookieValue}; expires=Thu, 13 Jun 2025 12:00:00 GMT; path=/`;
-};
-
-// Function to get learning data from cookie
-const getLearningDataFromCookie = () => {
-  const learningData = getCookie('PhiHaveBigDick');
-  return learningData ? JSON.parse(learningData) : [];
-};
-
 function App() {
   const [squares, setSquares] = useState(defaultSquares());
   const [winner, setWinner] = useState(null);
   const [isDraw, setIsDraw] = useState(false);
-  const [learningData, setLearningData] = useState(getLearningDataFromCookie());
-  const [isCookieConsent, setIsCookieConsent] = useState(getCookie('cookieConsent') === 'true');
-  const [cookieAccepted, setCookieAccepted] = useState(getCookie('cookieAccepted') === 'true');
+  const [learningData, setLearningData] = useState(getLearningDataFromLocalStorage());
+  const [isCookieConsent, setIsCookieConsent] = useState(true);
+  const [cookieAccepted, setCookieAccepted] = useState(true);
+  
 
   useEffect(() => {
     const isComputerTurn = squares.filter(square => square !== null).length % 2 === 1;
@@ -66,11 +49,11 @@ function App() {
       newSquares[index] = 'o';
       setSquares(newSquares);
 
-      // Save the move to learning data if consent is given
+      // Save the move to learning data
       if (isCookieConsent) {
         const newLearningData = [...learningData, { move: index, player: 'o' }];
         setLearningData(newLearningData);
-        saveLearningDataToCookie(newLearningData);
+        saveLearningDataToLocalStorage(newLearningData);
       }
     };
 
@@ -107,11 +90,11 @@ function App() {
       newSquares[index] = 'x';
       setSquares(newSquares);
 
-      // Save the move to learning data if consent is given
+      // Save the move to learning data
       if (isCookieConsent) {
         const newLearningData = [...learningData, { move: index, player: 'x' }];
         setLearningData(newLearningData);
-        saveLearningDataToCookie(newLearningData);
+        saveLearningDataToLocalStorage(newLearningData);
       }
     }
   }
@@ -121,14 +104,12 @@ function App() {
     setWinner(null);
     setIsDraw(false);
     setLearningData([]);
-    saveLearningDataToCookie([]);
+    saveLearningDataToLocalStorage([]);
   }
 
   function handleAcceptCookies() {
     setCookieAccepted(true);
     setIsCookieConsent(true); // อัพเดทค่านี้เมื่อยอมรับคุกกี้
-    document.cookie = `cookieAccepted=true; expires=Sun, 31 Dec 2024 12:00:00 UTC; path=/`;
-    document.cookie = `cookieConsent=true; expires=Sun, 31 Dec 2024 12:00:00 UTC; path=/`;
   }
 
   return (
